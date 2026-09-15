@@ -1,9 +1,15 @@
 merge_queue:
   mode: serial
+  max_parallel_checks: 1
 queue_rules:
-  - name: VM2 native stack late-registration finalizer
-    queue_conditions: []
-    merge_conditions:
-      - check-success = vm2-stack-hold
+  - name: VM2 deleted head repo in-place freshness
+    queue_conditions:
+      - base = vm2-headrepo-delete-base-0916
+    merge_conditions: []
     batch_size: 1
-    merge_method: merge
+pull_request_rules:
+  - name: VM2 autoqueue deleted head repo freshness
+    conditions:
+      - base = vm2-headrepo-delete-base-0916
+    actions:
+      queue:

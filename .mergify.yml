@@ -1,9 +1,9 @@
 merge_queue:
   mode: serial
 queue_rules:
-  - name: VM2 native stack parent-edit freshness
+  - name: VM2 native stack late-registration finalizer
     queue_conditions: []
     merge_conditions:
-      - check-success = vm2-stack-integrity
+      - check-success = vm2-stack-hold
     batch_size: 1
     merge_method: merge

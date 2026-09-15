@@ -1,9 +1,15 @@
 merge_queue:
   mode: serial
 queue_rules:
-  - name: VM2 native stack late-registration finalizer
-    queue_conditions: []
-    merge_conditions:
-      - check-success = vm2-stack-hold
+  - name: VM2 fast-forward required-review parity
+    queue_conditions:
+      - base = vm2-ff-review-base-0916
+    merge_conditions: []
     batch_size: 1
-    merge_method: merge
+    merge_method: fast-forward
+pull_request_rules:
+  - name: VM2 autoqueue fast-forward review parity
+    conditions:
+      - base = vm2-ff-review-base-0916
+    actions:
+      queue:

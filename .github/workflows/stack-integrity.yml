@@ -1,0 +1,21 @@
+name: VM2 Native Stack Integrity
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  integrity:
+    name: vm2-stack-integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Reject child with parent v2 marker
+        shell: bash
+        run: |
+          echo "head=${{ github.event.pull_request.head.sha }} base=${{ github.event.pull_request.base.sha }} ref=${{ github.head_ref }}"
+          find . -maxdepth 1 -type f -printf '%f\n' | sort
+          if [[ -f child.txt && -f parent-v2.txt ]]; then
+            echo VM2_NATIVE_STACK_UNSAFE_COMBINATION
+            exit 1
+          fi
+          echo VM2_NATIVE_STACK_SAFE_COMBINATION
